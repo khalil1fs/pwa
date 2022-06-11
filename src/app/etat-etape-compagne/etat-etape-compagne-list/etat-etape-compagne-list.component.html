@@ -1,0 +1,20 @@
+<i> total element :  <b>{{etatEtapes.length}}</b></i>
+<label> libelle </label>
+<!--<input type="text" [(ngModel)]="etatEtape.libelle"  name="libelle">-->
+<input type="text" [(ngModel)]="etatEtape.libelle">
+<label> code </label>
+<!--<input type="text" [(ngModel)]="etatEtape.code"  name="code">-->
+<input type="text" [(ngModel)]="etatEtape.code">
+<label> order </label>
+<!--<input type="number" [(ngModel)]="etatEtape.ordre"  name="ordre">-->
+<input type="number" [(ngModel)]="etatEtape.ordre">
+<br><br>
+<label> save </label>
+<button type="submit" (click)="save()">Save</button>
+
+
+
+
+<div>
+  <p *ngFor="let etat of etatEtapes">  code : <b>{{etat.code}}</b>, libelle : <b>{{etat.libelle}}</b> , order : <b>{{etat.ordre}}</b>  </p>
+</div>

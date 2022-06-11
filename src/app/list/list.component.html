@@ -1,0 +1,12 @@
+<div>
+    <h2>List</h2><button (click)="getAll()">Get collection</button>
+    <ol>
+        <li *ngFor="let item of items">
+            <ul>
+                <li>{{item.id}}</li>
+                <li>{{item.name}}</li>
+                <li>{{item.color}}</li>
+            </ul>
+        </li>
+    </ol>
+</div>
