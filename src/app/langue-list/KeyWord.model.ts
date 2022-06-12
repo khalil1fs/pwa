@@ -1,6 +1,3 @@
-
-
-
 export class KeyWordVo {
 
     public id: number;

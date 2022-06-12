@@ -3,6 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {EtatEtapeCampagneVo} from "../etat-etape-compagne/EtatEtapeCampagne.model";
 import {LangueVo} from "./Langue.model";
 import {KeyWordVo} from "./KeyWord.model";
+import PouchDB from 'node_modules/pouchdb';
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-langue-list',
@@ -13,20 +15,54 @@ export class LangueListComponent implements OnInit {
   keyWords: KeyWordVo[] = [];
   keyWordVo = new KeyWordVo();
   status = {};
-
-  constructor(private http: HttpClient) { }
+  pouchdb: any;
+  constructor(private http: HttpClient) {
+    this.pouchdb = new PouchDB("pouchform");
+  }
 
 
   ngOnInit(): void {
     this.findAll();
+
   }
 
   findAll(){
     this.http.get<Array<KeyWordVo>>('http://localhost:8036/api/admin/keyWord/').subscribe(
       data => {
-        console.log('langue list = '+data);
         this.keyWords = data;
-      },error => console.log('my get error: '+error));
+        Promise.all(data.map(form => {
+          return { _id: form.id,type: 'keyWord', ...form };
+        }).map(async (form) => {
+          try {
+            const result = await this.pouchdb.put(form);
+            console.log('type : '+ form.type)
+            console.log('INSERT FORM', result);
+          }catch (error){
+            if (error.name == 'conflict') {
+              console.log('CONFLICT FORM', error);
+              try {
+                const doc = await this.pouchdb.get(form._id);
+                console.log('UPDATE FORM', await this.pouchdb.put({ ...form, ...doc }));
+              } catch (error) {
+                console.log('UPDATE FORM ERROR', error);
+                throw error;
+              }
+            } else {
+              console.log('INSERT FORM ERROR', error);
+              throw error;
+            }
+          }
+          }));
+
+        /*this.keyWords.forEach(e=>this.pouchdb.post(e));
+
+        const result = this.pouchdb.allDocs({
+          include_docs: true,
+          attachments: true
+        });*/
+        // console.log(result);
+
+      });
   }
 
   save(){
