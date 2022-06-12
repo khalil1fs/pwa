@@ -9,10 +9,11 @@ import { environment } from '../environments/environment';
 import { FormComponent } from './form/form.component';
 import { ListComponent } from './list/list.component';
 import { EtatEtapeCompagneComponent } from './etat-etape-compagne/etat-etape-compagne.component';
-import { EtatEtapeCompagneListComponent } from './etat-etape-compagne/etat-etape-compagne-list/etat-etape-compagne-list.component';
 import { EtatEtapeCompagneCreateComponent } from './etat-etape-compagne/etat-etape-compagne-create/etat-etape-compagne-create.component';
 import { EtatEtapeCompagneEditComponent } from './etat-etape-compagne/etat-etape-compagne-edit/etat-etape-compagne-edit.component';
 import {RouterModule} from "@angular/router";
+import { LangueListComponent } from './langue-list/langue-list.component';
+import {EtatEtapeCompagneListComponent} from "./etat-etape-compagne/etat-etape-compagne-list/etat-etape-compagne-list.component";
 
 @NgModule({
   declarations: [
@@ -22,12 +23,14 @@ import {RouterModule} from "@angular/router";
     EtatEtapeCompagneComponent,
     EtatEtapeCompagneListComponent,
     EtatEtapeCompagneCreateComponent,
-    EtatEtapeCompagneEditComponent
+    EtatEtapeCompagneEditComponent,
+    LangueListComponent
   ],
   imports: [
-    // RouterModule.forRoot([
-    //   { path: }
-    // ]),
+    RouterModule.forRoot([
+      { path:'langue', component: LangueListComponent },
+      { path:'etat-etape-compagne', component: EtatEtapeCompagneListComponent  },
+    ]),
     BrowserModule,
 
     ServiceWorkerModule.register('serviceworker.js', {

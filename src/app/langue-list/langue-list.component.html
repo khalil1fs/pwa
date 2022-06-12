@@ -1,0 +1,18 @@
+<i> total KeyWords element :  <b>{{keyWords.length}}</b></i>
+<label> libelle FR</label>
+<input type="text" [(ngModel)]="keyWordVo.libelleFr">
+<label> libelle Eng </label>
+<input type="text" [(ngModel)]="keyWordVo.libelleEng">
+
+<label> Code </label>
+<input type="number" [(ngModel)]="keyWordVo.code">
+
+<!--<input type="number" [(ngModel)]="etatEtape.ordre">-->
+<!--<br><br>-->
+<!--<label> save </label>-->
+<button type="submit" (click)="save()">Save</button>
+
+
+<div>
+  <p *ngFor="let key of keyWords">  code : <b>{{key.code}}</b>, libelle Fr : <b>{{key.libelleFr}}</b>, libelle En : <b>{{key.libelleEng}}</b>  </p>
+</div>
