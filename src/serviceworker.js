@@ -22,14 +22,14 @@ self.addEventListener('fetch', (event) => {
   // test if we getting responce findAll from etatEtapeCompagne
 
   // get the same result in the 2 side
-  if (event.request.method === "GET" && ( event.request.url.indexOf('etatEtapeCampagne/') > -1 || event.request.url.indexOf('keyWord/') > -1)){
+  if (event.request.method === "GET" && event.request.url.indexOf('admin') > -1){
   // if ( event.request.method === "GET" ){
     console.log('INTERCEPT GET REQUEST', event.request.url);
     event.respondWith(this.handleGetRequest(event.request));
     event.stopImmediatePropagation();
   }   // test if we sending post from etatEtapeCompagne to the same url
 
-  else if (event.request.method === "POST" && event.request.url.indexOf('etatEtapeCampagne/') > -1){
+  else if (event.request.method === "POST" && event.request.url.indexOf('admin') > -1){
   // else if (event.request.method === "POST"){
     console.log('INTERCEPT POST REQUEST', event.request.url);
     // send to method [ handlePostRequest(event.request) ] and the same other
