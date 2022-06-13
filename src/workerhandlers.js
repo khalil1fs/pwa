@@ -1,22 +1,30 @@
-/*
+
 async function handleGetRequest(request) {
+
+  let text = request.url;
+  const myArray = text.split("/admin/");
+  result = myArray[1];
+  link = result.substring(0,result.length-1);
+  console.log('link: '+link);
+
   try {
     const response = await fetch(request);
     const responseClone = response.clone();
-    if (responseClone.status == 200) {
+    if (responseClone.status === 200) {
       const data = await responseClone.json();
       // destroy the old cache
-      await remoteCache.destroy();
+      // await remoteCache.destroy();
       // create a new remote cache (db)
       remoteCache = new this.PouchDB('remote-cache');
       await Promise.all(data.map(form => {
-        return { _id: form.id, ...form };
+        // this one work nice
+        return { _id: form.id,type: link, ...form };
       }).map(async (form) => {
         try {
           const result = await remoteCache.put(form);
-          console.log('INSERT FORM', result);
+          console.log('INSERT FORM ', result);
         } catch (error) {
-          if (error.name == 'conflict') {
+          if (error.name === 'conflict') {
             console.log('CONFLICT FORM', error);
             try {
               const doc = await remoteCache.get(form._id);
@@ -40,10 +48,17 @@ async function handleGetRequest(request) {
         include_docs: true, // otherwise only id and revision is returned
         attachments: true // include attachments as base64
       });
-      return new Response(JSON.stringify(result.rows.map(row => row.doc)), {
+      // console.log(row.doc.type);
+
+      return new Response(JSON.stringify(result.rows.filter(row => row.doc.type === link ).map( row => row.doc )),
+      // return new Response(JSON.stringify(result.rows.filter(row => row.doc.type === link ).map( row => {
+      //   row =>  row.doc )),
+          // row.doc
+      // })),
+        {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
-        ok: true
+        ok: true,
       });
     } catch (err) {
       console.log(err);
@@ -61,7 +76,7 @@ async function handlePostRequest(request) {
     const response = await fetch(request);
     const responseClone = response.clone();
     // if the response = 200 we don'thave to do anything house -> leave
-    if (responseClone.status == 200) {
+    if (responseClone.status === 200) {
       return response;
     }
     // if the response != 200 so there is connection but something house happend (405,404...)
@@ -80,7 +95,7 @@ async function handlePostRequest(request) {
       return new Response(JSON.stringify(formData), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
-        ok: true
+        ok: true,
       });
     } catch (err) {
       console.log(err);
@@ -88,4 +103,3 @@ async function handlePostRequest(request) {
     }
   }
 }
-*/

@@ -1,4 +1,4 @@
-/*
+
 // wld l3bd hato flien wana mdabz m3ah offline
 importScripts("https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js");
 importScripts("workerhandlers.js");
@@ -20,12 +20,17 @@ pendingCache.info().then(info => console.log(info));
 self.addEventListener('fetch', (event) => {
 
   // test if we getting responce findAll from etatEtapeCompagne
-  if (event.request.method == "GET"){
+
+  // get the same result in the 2 side
+  if (event.request.method === "GET" && ( event.request.url.indexOf('etatEtapeCampagne/') > -1 || event.request.url.indexOf('keyWord/') > -1)){
+  // if ( event.request.method === "GET" ){
     console.log('INTERCEPT GET REQUEST', event.request.url);
     event.respondWith(this.handleGetRequest(event.request));
     event.stopImmediatePropagation();
   }   // test if we sending post from etatEtapeCompagne to the same url
-  else if (event.request.method == "POST" && event.request.url.indexOf('etatEtapeCampagne/') > -1){
+
+  else if (event.request.method === "POST" && event.request.url.indexOf('etatEtapeCampagne/') > -1){
+  // else if (event.request.method === "POST"){
     console.log('INTERCEPT POST REQUEST', event.request.url);
     // send to method [ handlePostRequest(event.request) ] and the same other
     event.respondWith(this.handlePostRequest(event.request));
@@ -65,7 +70,7 @@ const backgroundSyncInterval = setInterval(async () => {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(doc)
         }).then(response => {
-          if (response.status == 200 || response.status == 201) {
+          if (response.status === 200 || response.status === 201) {
             console.log("SUCCESSFULLY SYNCED", doc);
             pendingCache.remove(row.doc._id, row.doc._rev);
           }
@@ -86,4 +91,3 @@ const backgroundSyncInterval = setInterval(async () => {
 // ! Must be imported last as it can override our listeners
 // this is all in the service-worker
 importScripts('./ngsw-worker.js');
-*/

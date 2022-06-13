@@ -28,9 +28,11 @@ import {EtatEtapeCompagneListComponent} from "./etat-etape-compagne/etat-etape-c
   ],
   imports: [
     RouterModule.forRoot([
-      { path:'langue', component: LangueListComponent },
+      { path:'keyword', component: LangueListComponent },
       { path:'etat-etape-compagne', component: EtatEtapeCompagneListComponent  },
-    ]),
+    ],
+      {scrollPositionRestoration: 'enabled',useHash: true}
+    ),
     BrowserModule,
 
     ServiceWorkerModule.register('serviceworker.js', {
